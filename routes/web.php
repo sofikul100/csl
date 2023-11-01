@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Service;
+use App\Models\WorkingProcess;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 /*
@@ -116,5 +117,64 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'role:admin']], funct
         Route::post('/page/setting/update/{id}','pageSettingUpdate')->name('page_setting.update');
         //=======end==========
     });
+
+
+    //============category routes here=============//
+    Route::controller(CategoryController::class)->group(function (){
+          Route::get('/categories/index','index')->name('categorie.index');
+          Route::get('/categorie/add/form','addForm')->name('categorie.add.form');
+          Route::post('/categorie/add','addCategorie')->name('categorie.add');
+
+          Route::get('/categorie/edit/{categorie_id}','editCategorie')->name('categorie.edit');
+          Route::post('/categorie/update/{categorie_id}','updateCategorie')->name('categorie.update');
+          Route::delete('/categorie/delete/{categorie_id}','deleteCategorie')->name('categorie.delete');
+    });
+
+    //======end=======/
+
+    //========== project routes start here=========//
+    
+    Route::controller(ProjectController::class)->group(function (){
+        Route::get('/project/index','index')->name('project.index');
+        Route::get('/project/add/form','addForm')->name('project.add.form');
+        Route::post('/project/add','addProject')->name('project.add');
+
+        Route::get('/project/edit/{project_id}','editProject')->name('project.edit');
+        Route::post('/project/update/{project_id}','updateProject')->name('project.update');
+        Route::delete('/project/delete/{project_id}','deleteProject')->name('project.delete');
+  });
+
+
+
+    //===========end=============
+
+    //========== project routes start here=========//
+    
+    Route::controller(WorkingProcessController::class)->group(function (){
+        Route::get('/working_process/index','index')->name('working_process.index');
+        Route::get('/working_process/add/form','addForm')->name('working_process.add.form');
+        Route::post('/working_process/add','addWorking_process')->name('working_process.add');
+
+        Route::get('/working_process/edit/{working_process_id}','editWorking_process')->name('working_process.edit');
+        Route::post('/working_process/update/{working_process_id}','updateWorking_process')->name('working_process.update');
+        Route::delete('/working_process/delete/{working_process_id}','deleteWorking_process')->name('working_process.delete');
+  });
+    //===========end=============
+    //=========== footer seeting route=========//
+    Route::get('/footer-setting/all',[FooterSettingController::class,'index'])->name('footer_setting_index');
+    Route::get('/footer-setting-edit/{id}',[FooterSettingController::class,'edit'])->name('footer_setting_edit');
+    Route::post('/footer-setting/update',[FooterSettingController::class,'update'])->name('footer_setting_update');
+   
+
+    //===========contact routes=========//
+    Route::delete('/contact/delete/{id}',[ContactController::class,'deleteContact'])->name('contact.delete');
+    Route::get('/contact/all',[ContactController::class,'index'])->name('contact.index');
+
+    //=========== about routes===============//
+    Route::get('/about/all',[AboutController::class,'index'])->name('about.index');
+    Route::get('/about-edit/{id}',[AboutController::class,'edit'])->name('about.edit');
+    Route::post('/about-update',[AboutController::class,'update'])->name('about.update');
+
+
 
 });

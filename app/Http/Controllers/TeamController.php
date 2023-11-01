@@ -82,14 +82,11 @@ class TeamController extends Controller
             'name' => 'required',
             'designation_id' => 'required',
             'facebook_url' => 'required',
-            'image' => 'required|image|mimes:png,jpg,jpeg'
+            'image' => 'image|mimes:png,jpg,jpeg'
         ]);
 
 
         $team = Team::with('image')->find($team_id);
-        if (!$team) {
-            abort('Team not found', 404);
-        }
         $team->name = $request->name;
         $team->designation_id = $request->designation_id;
         $team->facebook_url = $request->facebook_url;
@@ -97,7 +94,6 @@ class TeamController extends Controller
         $team->linkedin_url = $request->linkedin_url;
         $team->instagram_url = $request->instagram_url;
         $team->pinterest_url = $request->pinterest_url;
-
         if ($request->hasFile('image')) {
 
             $location_name = 'images/employee_images/'; //change folder name according to the MODEL
@@ -123,7 +119,11 @@ class TeamController extends Controller
                 $image->parentable_id = $team->id;
                 $image->parentable_type = Team::class;
                 $image->save();
+                return redirect()->route('team.index')->with('message', 'Team Updated Successfully');
             }
+            $team->save();
+            return redirect()->route('team.index')->with('message', 'Team Updated Successfully');
+        }else{
             $team->save();
             return redirect()->route('team.index')->with('message', 'Team Updated Successfully');
         }

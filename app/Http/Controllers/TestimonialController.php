@@ -80,7 +80,7 @@ class TestimonialController extends Controller
             'email' => 'required|email',
             'contact' => 'required',
             'designation'=>'required',
-            'image' => 'required|image|mimes:png,jpg,jpeg'
+            'image' => 'image|mimes:png,jpg,jpeg'
         ]);
 
 
@@ -111,6 +111,7 @@ class TestimonialController extends Controller
 
                 $testimonial->image->url = $location;
                 $testimonial->image->save();
+                dd('with image');
             } else {
                 $image = new Image();
                 $image->url = $location;
@@ -118,7 +119,12 @@ class TestimonialController extends Controller
                 $image->parentable_id = $testimonial->id;
                 $image->parentable_type = Testimonial::class;
                 $image->save();
+                dd('without image');
             }
+            dd('last update');
+            $testimonial->save();
+            return redirect()->route('testimonial.index')->with('message', 'Testimonial Updated Successfully');
+        }else{
             $testimonial->save();
             return redirect()->route('testimonial.index')->with('message', 'Testimonial Updated Successfully');
         }
