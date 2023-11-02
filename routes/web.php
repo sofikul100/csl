@@ -16,9 +16,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 Auth::routes(['verify' => true]);
-Route::get('/', function () {
-    return redirect()->route('admin_dashboard');
-});
+Route::get('/', [FrontendController::class,'index'])->name('index');
 
 
 Route::get('/home', function () {
@@ -178,3 +176,9 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'role:admin']], funct
 
 
 });
+
+
+
+//=============public routes here================//
+Route::post('/add/newsletter',[SubscriptionController::class,'addNewsletter'])->name('newsletter.add');
+Route::post('/add/contact',[ContactController::class,'addContact'])->name('contact.add');

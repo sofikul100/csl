@@ -14,14 +14,29 @@ class SubscriptionController extends Controller
     }
 
 
+    public function addNewsletter (Request $request){
+        $request->validate([
+            'email'=>'required|email'
+        ]);
+
+        $subscription = new Subscription();
+        $subscription->email = $request->email;
+        $subscription->save();
+        return  redirect()->back()->with('message','Thank You For Subscription.We Will Response As Soon As Possible');
+    }
+
 
     public function deleteSubscription ($id){
-        $subscription = Subscription::findwOrFail($id);
+        $subscription = Subscription::find($id);
         if(!$subscription){
             abort('subscription not found',404);
         }
         $subscription->delete();
+        return  redirect()->route('subscription.index')->with('message','Deleted Successfully');
     }
+
+
+    
 
 
     //=================== page setting routes willl be here============//

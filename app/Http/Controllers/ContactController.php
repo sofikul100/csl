@@ -93,6 +93,25 @@ class ContactController extends Controller
         return redirect()->route('contact.index');
     }
 
+    public function addContact (Request $request){
+        $request->validate([
+            'name'=>'required',
+            'email'=>'email|required',
+            'phone'=>'required|numeric',
+            'website'=>'required',
+            'message'=>'required'
+        ]);
+
+        $contact = new Contact();
+        $contact->name = $request->name;
+        $contact->email = $request->email;
+        $contact->contact = $request->phone;
+        $contact->website = $request->website;
+        $contact->content = $request->message;
+        $contact->save();
+        return  redirect()->back()->with('message','Thank You. We Will Response As Soon As Possible');
+    }
+
     /**
      * Remove the specified resource from storage.
      */
